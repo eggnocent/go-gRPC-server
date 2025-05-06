@@ -7,6 +7,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type userService struct {
@@ -29,6 +30,8 @@ func main() {
 	serv := grpc.NewServer()
 
 	user.RegisterUserServiceServer(serv, &userService{})
+
+	reflection.Register(serv)
 
 	if err := serv.Serve(listen); err != nil {
 		log.Fatal("error running server", err)
